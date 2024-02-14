@@ -2,6 +2,6 @@
 /MDK-ARM/.vscode
 /MDK-ARM/DebugConfig
 /MDK-ARM/STM32_mobilenet
-*.uvprojx
+*.uvoptx
 *.charles
 *.mxproject
