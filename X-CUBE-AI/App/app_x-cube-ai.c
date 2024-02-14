@@ -235,11 +235,7 @@ ai_i8 *data_outs[AI_NETWORK_OUT_NUM] = {
 
         Compute_pix_conv_tab(); 
         printf("Pixel conversion LUT Finished\r\n");
- 
-        // for (int i = 0; i < 256; i++)
-        // {
-        //     printf("%d ", pixel_conv_lut[i]);
-        // }
+
 
         return 0;
     }
@@ -275,9 +271,11 @@ ai_i8 *data_outs[AI_NETWORK_OUT_NUM] = {
             uint8_t r = (pixel >> 11) & 0x1F;
             uint8_t g = (pixel >> 5) & 0x3F;
             uint8_t b = pixel & 0x1F;
-            // input_data[i * 3] = pixel_conv_lut[r];
+
+            // input_data[i * 3] = pixel_conv_lut[r]; // 理论上应该是这样的，但是实际上如果input是uint8_t类型的话，就没必要了，直接赋值
             // input_data[i * 3 + 1] = pixel_conv_lut[g];
             // input_data[i * 3 + 2] = pixel_conv_lut[b];
+
             input_data[i * 3] = r;
             input_data[i * 3 + 1] = g;
             input_data[i * 3 + 2] = b;
@@ -301,7 +299,6 @@ ai_i8 *data_outs[AI_NETWORK_OUT_NUM] = {
             }
         }
 
-        // printf("Class: %s \t\tConfidence: %.2f%%\r\n", class_names[(int) tmp], max_conf * 100);
         sprintf(display_str, "%s", class_names[(int)tmp]);
         sprintf(conf_str, "%.2f%%", max_conf * 100);
         
@@ -326,7 +323,6 @@ ai_i8 *data_outs[AI_NETWORK_OUT_NUM] = {
         int res = -1;
         int class = -1;
 
-        // printf("TEMPLATE - run - main loop\r\n");
 
         if (network)
         {

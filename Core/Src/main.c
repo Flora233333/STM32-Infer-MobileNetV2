@@ -49,12 +49,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-__IO uint32_t Camera_Buffer[Display_BufferSize]; // 摄像头数据缓存                        
+__IO uint32_t Camera_Buffer[Display_BufferSize];             // 摄像头数据缓存                        
 __IO uint16_t detect_img_data[img_size * img_size];          // 检测图像数据缓存
 
-extern const char * class_names[];               // 类别名称
-char display_str[20];                    // 帧率缓存
-char conf_str[10]; 
+extern const char * class_names[];       // 类别名称
+char display_str[20];                    // 显示字符串缓存
+char conf_str[10];                       // 显示字符串缓存
 int class_num = 0;
 
 ai_u8 input_data[AI_NETWORK_IN_1_SIZE_BYTES];
@@ -144,20 +144,14 @@ int main(void)
 
             Get_Detect_Img(center_x, center_y, img_size, (uint16_t *)Camera_Buffer, (uint16_t *)detect_img_data); // 获取检测图像
 
-            // memset((void *)Camera_Buffer, 0, sizeof(Camera_Buffer));  // 清空摄像头数据缓存
-
-            // _LCD_DrawImage(center_y, center_x, img_size, img_size, (uint16_t *)Camera_Buffer, (uint16_t *)detect_img_data); // 显示检测图像
-            MX_X_CUBE_AI_Process();
+            MX_X_CUBE_AI_Process(); // 推理
             
-            _LCD_DrawRect(box_y, box_x, 128, 128, (uint16_t *)Camera_Buffer); // 清空检测区域
+            _LCD_DrawRect(box_y, box_x, 128, 128, (uint16_t *)Camera_Buffer);       // 画检测范围的框
             _LCD_DisplayString(center_y + 120, center_x - 10, (char *)display_str, (uint16_t *)Camera_Buffer); 
             _LCD_DisplayString(center_y + 150, center_x + 15, (char *)conf_str, (uint16_t *)Camera_Buffer); 
 
             LCD_CopyBuffer(0, 0, LCD_Width, LCD_Height, (uint16_t *)Camera_Buffer); // 将图像数据复制到屏幕
 
-            // MX_X_CUBE_AI_Process(); // AI处理
-
-            // sprintf(display_str, "%s - %f%%", class_names[class_num], ); // 显示类别名称
 
             LED1_Toggle;
         }
@@ -238,7 +232,7 @@ void Get_Detect_Img(uint16_t x, uint16_t y, uint16_t l, uint16_t *raw, uint16_t 
 
     for (i = 0; i < l; i++)
     {
-        for (j = 0; j < l - 15; j+=16) 
+        for (j = 0; j < l - 15; j+=16) // 循环展开没什么用，图一乐?
         {
             detect_img[j + i * l] = raw[(y + i) * 240 + x + j];
             detect_img[j + 1 + i * l] = raw[(y + i) * 240 + x + j + 1];
