@@ -1,7 +1,7 @@
 # STM32-Infer-MobileNetV2
 Inferring MobileNetV2 on STM32H7
 
-
+**Introduction video :** [（开源）如何使用STM32H7实时推理MobileNetV2图像识别网络🙂](https://www.bilibili.com/video/BV1MA4m1V72W)
 
 #### 🎈Model
 
